@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Set;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -44,14 +45,29 @@ public class ClientHandler implements Runnable {
 
     private void handleMessage(Message msg) {
         switch (msg.getType()) {
-            case PUBLIC      -> System.out.println("Room message from " + username);
-            case PRIVATE     -> System.out.println("Private message from " + username);
             case CREATE_ROOM -> {
                 String roomName = msg.getContent();
-                // TODO: išsaugoti kambarį
+                DataStorage.getInstance().createRoom(roomName);
+                DataStorage.getInstance().joinRoom(roomName, username);
                 System.out.println(username + " created room: " + roomName);
             }
-            case JOIN_ROOM   -> System.out.println("Join room: " + msg.getContent());
+            case JOIN_ROOM -> {
+                String roomName = msg.getContent();
+                DataStorage.getInstance().joinRoom(roomName, username);
+                System.out.println(username + " joined room: " + roomName);
+            }
+            case PUBLIC -> {
+                String roomName = msg.getRoom();
+                Set<String> members = DataStorage.getInstance().getRoomMembers(roomName);
+                for (String member : members) {
+                    ChatServer.sendToClient(member, msg);
+                }
+                DataStorage.getInstance().logMessage(username, roomName, msg.getContent());
+            }
+            case PRIVATE -> {
+                ChatServer.sendToClient(msg.getReceiver(), msg);
+                DataStorage.getInstance().logMessage(username, msg.getReceiver(), msg.getContent());
+            }
         }
     }
 

@@ -41,4 +41,11 @@ public class ChatServer {
     public static Set<String> getOnlineUsers() {
         return clients.keySet();
     }
+
+    public static void sendToClient(String username, Message msg) {
+        ClientHandler handler = clients.get(username);
+        if (handler != null) {
+            handler.sendMessage(msg);
+        }
+    }
 }
