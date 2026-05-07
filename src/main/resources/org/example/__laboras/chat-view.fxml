@@ -30,6 +30,10 @@
             <TextField fx:id="messageField" promptText="Write a message..." HBox.hgrow="ALWAYS"/>
             <Button text="Send" onAction="#onSend"/>
         </HBox>
+        <HBox spacing="5">
+            <TextField fx:id="privateField" promptText="Private message..." HBox.hgrow="ALWAYS"/>
+            <Button text="Send private" onAction="#onSendPrivate"/>
+        </HBox>
     </VBox>
 
 </HBox>

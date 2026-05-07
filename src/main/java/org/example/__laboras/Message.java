@@ -10,7 +10,9 @@ public class Message implements Serializable {
         JOIN_ROOM,
         ROOM_LIST,
         JOIN_OK,
-        USER_LIST
+        USER_LIST,
+        GET_ROOMS,
+        GET_USERS
     }
 
     private String sender;

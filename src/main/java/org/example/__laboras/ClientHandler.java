@@ -27,10 +27,15 @@ public class ClientHandler implements Runnable {
 
             Message first = (Message) in.readObject();
             username = first.getContent();
-
             ChatServer.registerClient(username, this);
+
+            String rooms = String.join(",", DataStorage.getInstance().getRooms());
+            String users = String.join(",", ChatServer.clients.keySet());
+            sendMessage(new Message(Message.Type.ROOM_LIST, "SERVER", username, rooms, null));
+            sendMessage(new Message(Message.Type.USER_LIST, "SERVER", username, users, null));
+
             ChatServer.broadcastRoomList();
-            System.out.println(username + " connected. Thread: " + Thread.currentThread().getName());
+
             Message msg;
             while ((msg = (Message) in.readObject()) != null) {
                 handleMessage(msg);
@@ -64,6 +69,7 @@ public class ClientHandler implements Runnable {
             }
             case PUBLIC -> {
                 String roomName = msg.getRoom();
+                System.out.println("PUBLIC į kambarį: " + roomName + " nariai: " + DataStorage.getInstance().getRoomMembers(roomName));
                 Set<String> members = DataStorage.getInstance().getRoomMembers(roomName);
                 for (String member : members) {
                     ChatServer.sendToClient(member, msg);
@@ -73,6 +79,14 @@ public class ClientHandler implements Runnable {
             case PRIVATE -> {
                 ChatServer.sendToClient(msg.getReceiver(), msg);
                 DataStorage.getInstance().logMessage(username, msg.getReceiver(), msg.getContent());
+            }
+            case GET_ROOMS -> {
+                String rooms = String.join(",", DataStorage.getInstance().getRooms());
+                sendMessage(new Message(Message.Type.ROOM_LIST, "SERVER", username, rooms, null));
+            }
+            case GET_USERS -> {
+                String users = String.join(",", ChatServer.clients.keySet());
+                sendMessage(new Message(Message.Type.USER_LIST, "SERVER", username, users, null));
             }
         }
     }

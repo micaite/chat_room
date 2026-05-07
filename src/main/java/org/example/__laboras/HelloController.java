@@ -33,8 +33,6 @@ public class HelloController {
 
                 ChatController chatController = loader.getController();
                 chatController.init(connection, username);
-
-                // Nustatyti handleIncoming į ChatController
                 connection.setOnMessage(msg -> chatController.handleIncoming(msg));
 
                 Stage stage = (Stage) usernameField.getScene().getWindow();

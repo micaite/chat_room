@@ -15,6 +15,7 @@ public class ChatController {
     @FXML private ListView<String> userList;
     @FXML private TextArea chatArea;
     @FXML private TextField messageField;
+    @FXML private TextField privateField;
 
     private ChatConnection connection;
     private String username;
@@ -23,6 +24,9 @@ public class ChatController {
     public void init(ChatConnection connection, String username) {
         this.connection = connection;
         this.username   = username;
+
+        connection.sendMessage(new Message(Message.Type.ROOM_LIST, username, null, "", null));
+        connection.sendMessage(new Message(Message.Type.USER_LIST, username, null, "", null));
     }
 
     @FXML
@@ -79,8 +83,26 @@ public class ChatController {
                         if (!u.isEmpty()) userList.getItems().add(u);
                     }
                 }
+                case PRIVATE -> {
+                    chatArea.appendText("[PRIVATE] " + msg.getSender() + ": " + msg.getContent() + "\n");
+                }
             }
         });
+    }
+
+    @FXML
+    private void onSendPrivate() {
+        String text = privateField.getText().trim();
+        String selectedUser = userList.getSelectionModel().getSelectedItem();
+
+        if (text.isEmpty() || selectedUser == null) {
+            chatArea.appendText("Select a user first!\n");
+            return;
+        }
+
+        connection.sendMessage(new Message(
+                Message.Type.PRIVATE, username, selectedUser, text, null));
+        privateField.clear();
     }
 
 }
