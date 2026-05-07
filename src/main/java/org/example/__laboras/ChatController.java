@@ -73,6 +73,12 @@ public class ChatController {
                 case PUBLIC -> {
                     chatArea.appendText(msg.getSender() + ": " + msg.getContent() + "\n");
                 }
+                case USER_LIST -> {
+                    userList.getItems().clear();
+                    for (String u : msg.getContent().split(",")) {
+                        if (!u.isEmpty()) userList.getItems().add(u);
+                    }
+                }
             }
         });
     }

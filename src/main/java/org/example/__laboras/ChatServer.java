@@ -10,7 +10,7 @@ public class ChatServer {
 
     public static final int PORT = 5000;
 
-    private static Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
+    public static Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
 
     public static void main (String[] args) throws IOException{
         ServerSocket serverSocket = new ServerSocket(PORT);
@@ -47,6 +47,15 @@ public class ChatServer {
         System.out.println("sendToClient: " + username + " handler=" + handler);
         if (handler != null) {
             handler.sendMessage(msg);
+        }
+    }
+
+    public static void broadcastRoomList() {
+        String rooms = String.join(",", DataStorage.getInstance().getRooms());
+        String users = String.join(",", clients.keySet());
+        for (ClientHandler h : clients.values()) {
+            h.sendMessage(new Message(Message.Type.ROOM_LIST, "SERVER", null, rooms, null));
+            h.sendMessage(new Message(Message.Type.USER_LIST, "SERVER", null, users, null));
         }
     }
 }

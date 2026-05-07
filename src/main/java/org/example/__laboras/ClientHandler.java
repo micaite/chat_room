@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Set;
 
+
 public class ClientHandler implements Runnable {
     private Socket socket;
     private ObjectOutputStream out;
@@ -28,6 +29,7 @@ public class ClientHandler implements Runnable {
             username = first.getContent();
 
             ChatServer.registerClient(username, this);
+            ChatServer.broadcastRoomList();
             System.out.println(username + " connected. Thread: " + Thread.currentThread().getName());
             Message msg;
             while ((msg = (Message) in.readObject()) != null) {
@@ -50,9 +52,7 @@ public class ClientHandler implements Runnable {
                 String roomName = msg.getContent();
                 DataStorage.getInstance().createRoom(roomName);
                 DataStorage.getInstance().joinRoom(roomName, username);
-
-                String rooms = String.join(",", DataStorage.getInstance().getRooms());
-                sendMessage(new Message(Message.Type.ROOM_LIST, "SERVER", username, rooms, null));
+                ChatServer.broadcastRoomList();
                 System.out.println(username + " created room: " + roomName);
             }
             case JOIN_ROOM -> {

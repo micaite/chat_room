@@ -1,7 +1,4 @@
 === ROOMS ===
-room1: [meda, liepa]
+room1: [meda]
+: [mantas]
 === MESSAGES ===
-meda -> room1: labas
-liepa -> room1: laaaaaa
-meda -> room1: tassfsdfd
-liepa -> room1: kaaaa
