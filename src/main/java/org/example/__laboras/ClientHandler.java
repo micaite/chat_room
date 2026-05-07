@@ -12,6 +12,7 @@ public class ClientHandler implements Runnable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String username;
+    private String currentRoom;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -49,12 +50,17 @@ public class ClientHandler implements Runnable {
                 String roomName = msg.getContent();
                 DataStorage.getInstance().createRoom(roomName);
                 DataStorage.getInstance().joinRoom(roomName, username);
+
+                String rooms = String.join(",", DataStorage.getInstance().getRooms());
+                sendMessage(new Message(Message.Type.ROOM_LIST, "SERVER", username, rooms, null));
                 System.out.println(username + " created room: " + roomName);
             }
             case JOIN_ROOM -> {
                 String roomName = msg.getContent();
+                System.out.println("JOIN_ROOM: " + roomName + " user=" + username); // <- pridėk
                 DataStorage.getInstance().joinRoom(roomName, username);
-                System.out.println(username + " joined room: " + roomName);
+                currentRoom = roomName;
+                sendMessage(new Message(Message.Type.JOIN_OK, "SERVER", username, roomName, null));
             }
             case PUBLIC -> {
                 String roomName = msg.getRoom();

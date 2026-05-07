@@ -44,6 +44,7 @@ public class ChatServer {
 
     public static void sendToClient(String username, Message msg) {
         ClientHandler handler = clients.get(username);
+        System.out.println("sendToClient: " + username + " handler=" + handler);
         if (handler != null) {
             handler.sendMessage(msg);
         }

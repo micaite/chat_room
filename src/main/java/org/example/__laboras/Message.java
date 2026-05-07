@@ -7,7 +7,9 @@ public class Message implements Serializable {
         PUBLIC,
         PRIVATE,
         CREATE_ROOM,
-        JOIN_ROOM
+        JOIN_ROOM,
+        ROOM_LIST,
+        JOIN_OK
     }
 
     private String sender;

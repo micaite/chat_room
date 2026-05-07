@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.__laboras.ChatController">
+
+    <!-- Kairė - kambariai ir vartotojai -->
+    <VBox spacing="5" prefWidth="150">
+        <padding><Insets top="10" left="10" right="10" bottom="10"/></padding>
+
+        <Label text="Rooms:"/>
+        <ListView fx:id="roomList" prefHeight="150"/>
+        <Button text="Create room" onAction="#onCreateRoom" maxWidth="Infinity"/>
+        <Button text="Join room" onAction="#onJoinRoom" maxWidth="Infinity"/>
+
+        <Label text="Users:"/>
+        <ListView fx:id="userList" prefHeight="150"/>
+    </VBox>
+
+    <!-- Centras - pokalbis -->
+    <VBox spacing="5" HBox.hgrow="ALWAYS">
+        <padding><Insets top="10" left="10" right="10" bottom="10"/></padding>
+
+        <TextArea fx:id="chatArea" editable="false" VBox.vgrow="ALWAYS"/>
+
+        <HBox spacing="5">
+            <TextField fx:id="messageField" promptText="Write a message..." HBox.hgrow="ALWAYS"/>
+            <Button text="Send" onAction="#onSend"/>
+        </HBox>
+    </VBox>
+
+</HBox>
