@@ -1,8 +1,9 @@
-=== ROOMS ===
-room1: [irmina, meda, urte]
-room2: [irmina]
-=== MESSAGES ===
-irmina -> urte: labas urte
-irmina -> room1: labas visi
-irmina -> room1: labas visi
-urte -> meda: labsa meda
+USERS
+nedas
+meda
+ROOMS
+room1: [nedas, meda]
+MESSAGES
+nedas -> room1: labs
+nedas -> room1: labas
+nedas -> meda: atee

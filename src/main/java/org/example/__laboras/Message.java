@@ -2,7 +2,7 @@ package org.example.__laboras;
 
 import java.io.Serializable;
 
-public class Message implements Serializable {
+public class Message implements Serializable {                                                   //serializable, kad objectOutputStream galetu paversti baitais ir siusti per tinkla
     public enum Type {
         PUBLIC,
         PRIVATE,

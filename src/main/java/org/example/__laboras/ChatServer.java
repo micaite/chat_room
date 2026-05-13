@@ -34,20 +34,16 @@ public class ChatServer {
         clients.remove(username);
     }
 
-    public static boolean isUsernameTaken(String username) {
-        return clients.containsKey(username);
-    }
-
-    public static Set<String> getOnlineUsers() {
-        return clients.keySet();
-    }
-
     public static void sendToClient(String username, Message msg) {
         ClientHandler handler = clients.get(username);
         System.out.println("sendToClient: " + username + " handler=" + handler);
         if (handler != null) {
             handler.sendMessage(msg);
         }
+    }
+
+    public static Set<String> getOnlineUsers() {
+        return clients.keySet();
     }
 
     public static void broadcastRoomList() {

@@ -44,7 +44,7 @@ public class ChatConnection {
         try {
             while (true) {
                 Message msg = (Message) in.readObject();
-                System.out.println("Gauta iš serverio: " + msg.getType() + " " + msg.getContent());
+                System.out.println("Received from server: " + msg.getType() + " " + msg.getContent());
                 onMessage.accept(msg);
             }
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class ChatConnection {
 
     public synchronized void sendMessage(Message msg) {
         try {
-            System.out.println("Siunčiama: " + msg.getType() + " " + msg.getContent());
+            System.out.println("Sending: " + msg.getType() + " " + msg.getContent());
             out.writeObject(msg);
             out.flush();
             out.reset();

@@ -62,7 +62,7 @@ public class ClientHandler implements Runnable {
             }
             case JOIN_ROOM -> {
                 String roomName = msg.getContent();
-                System.out.println("JOIN_ROOM: " + roomName + " user=" + username); // <- pridėk
+                System.out.println("JOIN_ROOM: " + roomName + " user=" + username);
                 DataStorage.getInstance().joinRoom(roomName, username);
                 currentRoom = roomName;
                 sendMessage(new Message(Message.Type.JOIN_OK, "SERVER", username, roomName, null));
